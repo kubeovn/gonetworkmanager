@@ -7,6 +7,10 @@ import (
 )
 
 const (
+	DBusInterface  = "org.freedesktop.DBus"
+	DBusObjectPath = "/org/freedesktop/DBus"
+	DBusListNames  = "org.freedesktop.DBus.ListNames"
+
 	NetworkManagerInterface  = "org.freedesktop.NetworkManager"
 	NetworkManagerObjectPath = "/org/freedesktop/NetworkManager"
 
@@ -59,6 +63,9 @@ const (
 
 type NetworkManager interface {
 	/* METHODS */
+
+	// Running Check whether NetworkManager is running
+	Running() (bool, error)
 
 	// Reload NetworkManager's configuration and perform certain updates, like flushing a cache or rewriting external state to disk. This is similar to sending SIGHUP to NetworkManager but it allows for more fine-grained control over what to reload (see flags). It also allows non-root access via PolicyKit and contrary to signals it is synchronous.
 	// No flags (0x00) means to reload everything that is supported which is identical to sending a SIGHUP.
@@ -227,6 +234,21 @@ type networkManager struct {
 	dbusBase
 
 	sigChan chan *dbus.Signal
+}
+
+func (nm *networkManager) Running() (bool, error) {
+	var paths []dbus.ObjectPath
+	obj := nm.dbusBase.conn.Object(DBusInterface, DBusObjectPath)
+	if err := obj.Call(DBusListNames, 0).Store(&paths); err != nil {
+		return false, err
+	}
+
+	for _, path := range paths {
+		if path == NetworkManagerInterface {
+			return true, nil
+		}
+	}
+	return false, nil
 }
 
 func (nm *networkManager) Reload(flags uint32) error {
