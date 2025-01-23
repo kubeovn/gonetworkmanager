@@ -35,7 +35,7 @@ type IP4Address struct {
 
 type IP4AddressData struct {
 	Address string
-	Prefix  uint8
+	Prefix  uint32
 }
 
 // Deprecated: use IP4RouteData instead
@@ -48,9 +48,9 @@ type IP4Route struct {
 
 type IP4RouteData struct {
 	Destination          string
-	Prefix               uint8
+	Prefix               uint32
 	NextHop              string
-	Metric               uint8
+	Metric               uint32
 	AdditionalAttributes map[string]string
 }
 
@@ -151,7 +151,7 @@ func (c *ip4Config) GetPropertyAddressData() ([]IP4AddressData, error) {
 
 		ret[i] = IP4AddressData{
 			Address: address,
-			Prefix:  uint8(prefix),
+			Prefix:  prefix,
 		}
 	}
 
@@ -208,7 +208,7 @@ func (c *ip4Config) GetPropertyRouteData() ([]IP4RouteData, error) {
 				if !ok {
 					return routes, errors.New("unexpected variant type for prefix")
 				}
-				route.Prefix = uint8(prefix)
+				route.Prefix = prefix
 			case "next-hop":
 				nextHop, ok := routeDataAttribute.Value().(string)
 				if !ok {
@@ -220,7 +220,7 @@ func (c *ip4Config) GetPropertyRouteData() ([]IP4RouteData, error) {
 				if !ok {
 					return routes, errors.New("unexpected variant type for metric")
 				}
-				route.Metric = uint8(metric)
+				route.Metric = metric
 			default:
 				if route.AdditionalAttributes == nil {
 					route.AdditionalAttributes = make(map[string]string)
