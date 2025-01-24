@@ -32,7 +32,7 @@ type IP6Address struct {
 
 type IP6AddressData struct {
 	Address string
-	Prefix  uint8
+	Prefix  uint32
 }
 
 // Deprecated: use IP6RouteData instead
@@ -45,9 +45,9 @@ type IP6Route struct {
 
 type IP6RouteData struct {
 	Destination          string
-	Prefix               uint8
+	Prefix               uint32
 	NextHop              string
-	Metric               uint8
+	Metric               uint32
 	AdditionalAttributes map[string]string
 }
 
@@ -110,7 +110,7 @@ func (c *ip6Config) GetPropertyAddressData() ([]IP6AddressData, error) {
 
 		ret[i] = IP6AddressData{
 			Address: address,
-			Prefix:  uint8(prefix),
+			Prefix:  prefix,
 		}
 	}
 
@@ -146,7 +146,7 @@ func (c *ip6Config) GetPropertyRouteData() ([]IP6RouteData, error) {
 				if !ok {
 					return routes, errors.New("unexpected variant type for prefix")
 				}
-				route.Prefix = uint8(prefix)
+				route.Prefix = prefix
 			case "next-hop":
 				nextHop, ok := routeDataAttribute.Value().(string)
 				if !ok {
@@ -158,7 +158,7 @@ func (c *ip6Config) GetPropertyRouteData() ([]IP6RouteData, error) {
 				if !ok {
 					return routes, errors.New("unexpected variant type for metric")
 				}
-				route.Metric = uint8(metric)
+				route.Metric = metric
 			default:
 				if route.AdditionalAttributes == nil {
 					route.AdditionalAttributes = make(map[string]string)
