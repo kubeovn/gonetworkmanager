@@ -450,7 +450,7 @@ func (nm *networkManager) GetPropertyDevices() ([]Device, error) {
 
 	devices := make([]Device, len(devicesPaths))
 	for i, path := range devicesPaths {
-		devices[i], err = NewDevice(path)
+		devices[i], err = DeviceFactory(path)
 		if err != nil {
 			return devices, err
 		}
@@ -467,7 +467,7 @@ func (nm *networkManager) GetPropertyAllDevices() ([]Device, error) {
 
 	devices := make([]Device, len(devicesPaths))
 	for i, path := range devicesPaths {
-		devices[i], err = NewDevice(path)
+		devices[i], err = DeviceFactory(path)
 		if err != nil {
 			return devices, err
 		}
