@@ -82,10 +82,10 @@ type Device interface {
 	GetPath() dbus.ObjectPath
 
 	// Reapply Attempts to update the configuration of a device without deactivating it. NetworkManager has the concept of connections, which are profiles that contain the configuration for a networking device. Those connections are exposed via D-Bus as individual objects that can be created, modified and deleted. When activating such a settings-connection on a device, the settings-connection is cloned to become an applied-connection and used to configure the device (see GetAppliedConnection). Subsequent modification of the settings-connection don't propagate automatically to the device's applied-connection (with exception of the firewall-zone and the metered property). For the changes to take effect, you can either re-activate the settings-connection, or call Reapply. The Reapply call allows you to directly update the applied-connection and reconfigure the device. Reapply can also be useful if the currently applied-connection is equal to the connection that is about to be reapplied. This allows to reconfigure the device and revert external changes like removing or adding an IP address (which NetworkManager doesn't revert automatically because it is assumed that the user made these changes intentionally outside of NetworkManager). Reapply can make the applied-connection different from the settings-connection, just like updating the settings-connection can make them different.
-	// connection: The optional connection settings that will be reapplied on the device. If empty, the currently active settings-connection will be used. The connection cannot arbitrarly differ from the current applied-connection otherwise the call will fail. Only certain changes are supported, like adding or removing IP addresses.
+	// connection: The optional connection settings that will be reapplied on the device. If empty, the currently active settings-connection will be used. The connection cannot arbitrary differ from the current applied-connection otherwise the call will fail. Only certain changes are supported, like adding or removing IP addresses.
 	// versionId: If non-zero, the current version id of the applied-connection must match. The current version id can be retrieved via GetAppliedConnection. This optional argument allows to catch concurrent modifications between the GetAppliedConnection call and Reapply.
 	// flags: Flags which would modify the behavior of the Reapply call. There are no flags defined currently and the users should use the value of 0.
-	Reapply(connection Connection, versionId uint64, flags uint32) error
+	Reapply(settings ConnectionSettings, versionId uint64, flags uint32) error
 
 	// Disconnect a device and prevents the device from automatically activating further connections without user intervention.
 	Disconnect() error
@@ -179,8 +179,8 @@ func (d *device) GetPath() dbus.ObjectPath {
 	return d.obj.Path()
 }
 
-func (d *device) Reapply(connection Connection, versionId uint64, flags uint32) error {
-	return d.call(DeviceReapply, connection, versionId, flags)
+func (d *device) Reapply(settings ConnectionSettings, versionId uint64, flags uint32) error {
+	return d.call(DeviceReapply, settings, versionId, flags)
 }
 
 func (d *device) Disconnect() error {
