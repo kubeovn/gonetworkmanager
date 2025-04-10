@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Wifx/gonetworkmanager/v3"
 	"github.com/google/uuid"
+
+	"github.com/kubeovn/gonetworkmanager/v3"
 )
 
 const (
@@ -67,7 +68,6 @@ func printVersion() error {
 func checkForExistingConnection() (bool, error) {
 	// See if our connection already exists
 	settings, err := gonetworkmanager.NewSettings()
-
 	if err != nil {
 		return false, err
 	}
@@ -92,7 +92,6 @@ func checkForExistingConnection() (bool, error) {
 }
 
 func createNewConnection() error {
-
 	connection := make(map[string]map[string]interface{})
 	connection[ethernetSection] = make(map[string]interface{})
 	connection[ethernetSection][ethernetSectionAutoNegotiate] = false
@@ -134,13 +133,11 @@ func createNewConnection() error {
 	connection[ip6Section][ip6SectionMethod] = desiredIP6Method
 
 	settings, err := gonetworkmanager.NewSettings()
-
 	if err != nil {
 		return err
 	}
 
 	_, err = settings.AddConnection(connection)
-
 	if err != nil {
 		return err
 	}
@@ -148,7 +145,6 @@ func createNewConnection() error {
 }
 
 func main() {
-
 	// show the version
 	if printVersion() != nil {
 		fmt.Println("failed to find version.  Is NetworkManager running?")
@@ -157,7 +153,6 @@ func main() {
 
 	// See if our connection already exists
 	doesExist, err := checkForExistingConnection()
-
 	// if an error then we are done.
 	if err != nil {
 		fmt.Println(err.Error())
@@ -172,7 +167,6 @@ func main() {
 
 	// create the new connection
 	err = createNewConnection()
-
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)

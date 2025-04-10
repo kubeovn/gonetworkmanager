@@ -24,7 +24,7 @@ const (
 	ConnectionPropertyFilename = ConnectionInterface + ".Filename" // readable   s
 )
 
-//type ConnectionSettings map[string]map[string]interface{}
+// type ConnectionSettings map[string]map[string]interface{}
 type ConnectionSettings map[string]map[string]interface{}
 
 type Connection interface {

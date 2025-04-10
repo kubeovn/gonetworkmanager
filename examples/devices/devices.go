@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/Wifx/gonetworkmanager/v3"
 	"os"
+
+	"github.com/kubeovn/gonetworkmanager/v3"
 )
 
 func main() {
-
 	/* Create new instance of gonetworkmanager */
 	nm, err := gonetworkmanager.NewNetworkManager()
 	if err != nil {

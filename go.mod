@@ -1,6 +1,6 @@
-module github.com/Wifx/gonetworkmanager/v3
+module github.com/kubeovn/gonetworkmanager/v3
 
-go 1.12
+go 1.23.8
 
 require (
 	github.com/godbus/dbus/v5 v5.1.0
