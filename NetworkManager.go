@@ -3,7 +3,7 @@ package gonetworkmanager
 import (
 	"encoding/json"
 
-	"github.com/godbus/dbus/v5"
+	"github.com/kubeovn/dbus/v5"
 )
 
 const (
@@ -217,7 +217,7 @@ type NetworkManager interface {
 	GetPropertyConnectivityCheckEnabled() (bool, error)
 
 	// Dictionary of global DNS settings where the key is one of "searches", "options" and "domains". The values for the "searches" and "options" keys are string arrays describing the list of search domains and resolver options, respectively. The value of the "domains" key is a second-level dictionary, where each key is a domain name, and each key's value is a third-level dictionary with the keys "servers" and "options". "servers" is a string array of DNS servers, "options" is a string array of domain-specific options.
-	//GetPropertyGlobalDnsConfiguration() []interface{}
+	// GetPropertyGlobalDnsConfiguration() []interface{}
 
 	Subscribe() <-chan *dbus.Signal
 	Unsubscribe()
@@ -415,7 +415,6 @@ func (nm *networkManager) State() (state NmState, err error) {
 }
 
 func (nm *networkManager) CheckpointCreate(devices []Device, rollbackTimeout uint32, flags uint32) (cp Checkpoint, err error) {
-
 	var devicePaths []dbus.ObjectPath
 	if len(devices) > 0 {
 		for _, device := range devices {
@@ -442,7 +441,6 @@ func (nm *networkManager) CheckpointDestroy(checkpoint Checkpoint) error {
 }
 
 func (nm *networkManager) CheckpointRollback(checkpoint Checkpoint) (results map[dbus.ObjectPath]NmRollbackResult, err error) {
-
 	var ret map[dbus.ObjectPath]NmRollbackResult
 
 	err = nm.callWithReturn(&ret, NetworkManagerCheckpointRollback, checkpoint.GetPath())
@@ -566,7 +564,6 @@ func (nm *networkManager) GetPropertyActiveConnections() ([]ActiveConnection, er
 
 func (nm *networkManager) GetPropertyPrimaryConnection() (ActiveConnection, error) {
 	activeConnectionPath, err := nm.getObjectProperty(NetworkManagerPropertyPrimaryConnection)
-
 	if err != nil {
 		return nil, err
 	}
@@ -635,7 +632,6 @@ func (nm *networkManager) Unsubscribe() {
 }
 
 func (nm *networkManager) MarshalJSON() ([]byte, error) {
-
 	Devices, err := nm.GetPropertyDevices()
 	if err != nil {
 		return nil, err

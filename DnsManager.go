@@ -3,7 +3,7 @@ package gonetworkmanager
 import (
 	"errors"
 
-	"github.com/godbus/dbus/v5"
+	"github.com/kubeovn/dbus/v5"
 )
 
 const (

@@ -1,15 +1,19 @@
 package gonetworkmanager
 
 import (
+	"context"
 	"encoding/binary"
 	"fmt"
 	"net"
+	"time"
 
-	"github.com/godbus/dbus/v5"
+	"github.com/kubeovn/dbus/v5"
 )
 
 const (
 	dbusMethodAddMatch = "org.freedesktop.DBus.AddMatch"
+
+	connTimeout = time.Second
 )
 
 type dbusBase struct {
@@ -18,9 +22,11 @@ type dbusBase struct {
 }
 
 func (d *dbusBase) init(iface string, objectPath dbus.ObjectPath) error {
-	var err error
+	ctx, cancel := context.WithTimeout(context.Background(), connTimeout)
+	defer cancel()
 
-	d.conn, err = dbus.SystemBus()
+	var err error
+	d.conn, err = dbus.SystemBus(dbus.WithContext(ctx))
 	if err != nil {
 		return err
 	}

@@ -3,7 +3,7 @@ package gonetworkmanager
 import (
 	"fmt"
 
-	"github.com/godbus/dbus/v5"
+	"github.com/kubeovn/dbus/v5"
 )
 
 const (
@@ -149,6 +149,7 @@ func (a *activeConnection) GetPropertyDevices() ([]Device, error) {
 	}
 	return devices, nil
 }
+
 func (a *activeConnection) GetPropertyState() (NmActiveConnectionState, error) {
 	v, err := a.getUint32Property(ActiveConnectionPropertyState)
 	return NmActiveConnectionState(v), err
@@ -227,7 +228,6 @@ type StateChange struct {
 }
 
 func (a *activeConnection) SubscribeState(receiver chan StateChange, exit chan struct{}) (err error) {
-
 	channel := make(chan *dbus.Signal, 1)
 
 	a.conn.Signal(channel)

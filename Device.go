@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/godbus/dbus/v5"
+	"github.com/kubeovn/dbus/v5"
 )
 
 const (
@@ -379,7 +379,6 @@ type DeviceStateChange struct {
 }
 
 func (d *device) SubscribeState(receiver chan DeviceStateChange, exit chan struct{}) (err error) {
-
 	channel := make(chan *dbus.Signal, 1)
 
 	d.conn.Signal(channel)

@@ -1,7 +1,7 @@
 package gonetworkmanager
 
 import (
-	"github.com/godbus/dbus/v5"
+	"github.com/kubeovn/dbus/v5"
 )
 
 const (
@@ -108,7 +108,6 @@ func (s *settings) AddConnection(settings ConnectionSettings) (Connection, error
 func (s *settings) AddConnectionUnsaved(settings ConnectionSettings) (Connection, error) {
 	var path dbus.ObjectPath
 	err := s.callWithReturn(&path, SettingsAddConnectionUnsaved, settings)
-
 	if err != nil {
 		return nil, err
 	}

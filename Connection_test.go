@@ -1,9 +1,10 @@
 package gonetworkmanager
 
 import (
-	"github.com/godbus/dbus/v5"
 	"reflect"
 	"testing"
+
+	"github.com/kubeovn/dbus/v5"
 )
 
 func TestDecodeSettings(t *testing.T) {

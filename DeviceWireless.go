@@ -3,7 +3,7 @@ package gonetworkmanager
 import (
 	"encoding/json"
 
-	"github.com/godbus/dbus/v5"
+	"github.com/kubeovn/dbus/v5"
 )
 
 const (
@@ -82,7 +82,6 @@ type deviceWireless struct {
 func (d *deviceWireless) GetAccessPoints() ([]AccessPoint, error) {
 	var apPaths []dbus.ObjectPath
 	err := d.callWithReturn(&apPaths, DeviceWirelessGetAccessPoints)
-
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +101,6 @@ func (d *deviceWireless) GetAccessPoints() ([]AccessPoint, error) {
 func (d *deviceWireless) GetAllAccessPoints() ([]AccessPoint, error) {
 	var apPaths []dbus.ObjectPath
 	err := d.callWithReturn(&apPaths, DeviceWirelessGetAllAccessPoints)
-
 	if err != nil {
 		return nil, err
 	}
